@@ -4,9 +4,21 @@ import Product from '../models/Product.js';
 const router = express.Router();
 
 // Get all products
+// Get all products or search by name
 router.get('/', async (req, res) => {
+  const searchQuery = req.query.q;
+
   try {
-    const products = await Product.find().sort({ createdAt: -1 });
+    let products;
+
+    if (searchQuery) {
+      products = await Product.find({
+        name: { $regex: searchQuery, $options: 'i' }, // case-insensitive search
+      }).sort({ createdAt: -1 });
+    } else {
+      products = await Product.find().sort({ createdAt: -1 });
+    }
+
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
