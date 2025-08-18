@@ -90,4 +90,26 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// GET single product by slug (like "any product")
+router.get('/products/slug/:slug', async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    // convert slug back to product name format
+    const name = slug.replace(/-/g, ' ');
+
+    const product = await Product.findOne({
+      name: { $regex: new RegExp(`^${name}$`, 'i') } // case-insensitive exact match
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 export default router;
