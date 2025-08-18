@@ -35,6 +35,31 @@ export const useProducts = () => {
   return context;
 };
 
+const [products, setProducts] = useState<Product[]>([]);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch('/api/products');
+      const data = await res.json();
+      setProducts(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, []);
+
+return (
+  <ProductContext.Provider value={{ products, loading }}>
+    {children}
+  </ProductContext.Provider>
+);
+
 export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
