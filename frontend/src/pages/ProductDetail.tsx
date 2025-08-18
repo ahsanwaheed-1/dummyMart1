@@ -12,12 +12,20 @@ const ProductDetail: React.FC = () => {
     (p) => p.name.toLowerCase().replace(/\s+/g, '-') === name?.toLowerCase()
   );
 
+  const { products, loading } = useProducts();
+
+  if (loading) {
+    return null; 
+  }
+
   if (!product) {
     return (
-        <div className="max-w-4xl mx-auto py-16 text-center">
-            <h2 className="text-3xl font-bold text-gray-800">Product not found</h2>
-            <p className="text-gray-600">Go back to <a href="/" className="text-blue-600">Home</a></p>
-        </div>
+      <div className="max-w-4xl mx-auto py-16 text-center">
+        <h2 className="text-3xl font-bold text-gray-800">Product not found</h2>
+        <p className="text-gray-600">
+          Go back to <a href="/" className="text-blue-600">Home</a>
+        </p>
+      </div>
     );
   }
 
