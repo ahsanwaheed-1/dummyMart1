@@ -1,23 +1,40 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useProducts } from '../context/ProductContext';
-import { Star, MessageCircle } from 'lucide-react';
+import { Star, MessageCircle, Loader2 } from 'lucide-react';
 
 const ProductDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-  const { products } = useProducts();
+  const { products, loading } = useProducts(); // ✅ include loading from context
 
-  // Find product by name (case-insensitive)
+  // If still loading products, show spinner
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+        <span className="ml-3 text-lg font-medium text-gray-700">
+          Loading product...
+        </span>
+      </div>
+    );
+  }
+
+  // Find product by name (case-insensitive, slugified)
   const product = products.find(
     (p) => p.name.toLowerCase().replace(/\s+/g, '-') === name?.toLowerCase()
   );
 
   if (!product) {
     return (
-        <div className="max-w-4xl mx-auto py-16 text-center">
-            <h2 className="text-3xl font-bold text-gray-800">Product not found</h2>
-            <p className="text-gray-600">Go back to <a href="/" className="text-blue-600">Home</a></p>
-        </div>
+      <div className="max-w-4xl mx-auto py-16 text-center">
+        <h2 className="text-3xl font-bold text-gray-800">Product not found</h2>
+        <p className="text-gray-600">
+          Go back to{' '}
+          <a href="/" className="text-blue-600 hover:underline">
+            Home
+          </a>
+        </p>
+      </div>
     );
   }
 
