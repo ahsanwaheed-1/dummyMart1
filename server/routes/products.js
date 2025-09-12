@@ -7,10 +7,10 @@ const router = express.Router();
 // Get all products or search by name
 router.get('/', async (req, res) => {
   const searchQuery = req.query.q;
-
+  
   try {
     let products;
-
+    
     if (searchQuery) {
       products = await Product.find({
         name: { $regex: searchQuery, $options: 'i' }, // case-insensitive search
@@ -18,11 +18,15 @@ router.get('/', async (req, res) => {
     } else {
       products = await Product.find().sort({ createdAt: -1 });
     }
-
+    
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+});
+
+router.get('/location', (req, res) => {
+  res.json({ location: 'Johar Town' });
 });
 
 // Get product by ID
