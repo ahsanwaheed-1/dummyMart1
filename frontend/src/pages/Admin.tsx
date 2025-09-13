@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProducts } from '../context/ProductContext';
-import { Plus, LogOut, Star, Image } from 'lucide-react';
+import { Plus, LogOut, Star, Image, Link2 } from 'lucide-react';
 
 const Admin: React.FC = () => {
   const navigate = useNavigate();
@@ -15,7 +15,10 @@ const Admin: React.FC = () => {
     category: '',
     rating: '5',
     description: '',
-    imageUrl: ''
+    imageUrl: '',
+    store: '',
+    brand: '',
+    link: ''
   });
 
   useEffect(() => {
@@ -43,8 +46,11 @@ const Admin: React.FC = () => {
         category: formData.category,
         rating: parseFloat(formData.rating),
         description: formData.description,
-        reviews: [],
-        imageUrl: formData.imageUrl
+        reviews: [], 
+        imageUrl: formData.imageUrl,
+        store: formData.store,
+        brand: formData.brand,
+        link: formData.link
       });
 
       // Reset form
@@ -54,7 +60,10 @@ const Admin: React.FC = () => {
         category: '',
         rating: '5',
         description: '',
-        imageUrl: ''
+        imageUrl: '',
+        store: '',
+        brand: '',
+        link: ''
       });
       setShowForm(false);
       alert('Product added successfully!');
@@ -122,6 +131,7 @@ const Admin: React.FC = () => {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Product name */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Product Name
@@ -136,6 +146,7 @@ const Admin: React.FC = () => {
                     />
                   </div>
 
+                  {/* Price */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Price ($)
@@ -152,6 +163,7 @@ const Admin: React.FC = () => {
                     />
                   </div>
 
+                  {/* Category */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Category
@@ -166,6 +178,7 @@ const Admin: React.FC = () => {
                     />
                   </div>
 
+                  {/* Rating */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       <Star className="inline h-4 w-4 mr-1" />
@@ -185,8 +198,37 @@ const Admin: React.FC = () => {
                       <option value="5">5 Stars</option>
                     </select>
                   </div>
+
+                  {/* Store Name */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Store Name
+                    </label>
+                    <input
+                      type="text"
+                      name="store"
+                      value={formData.store}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  {/* Brand Name */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Brand Name
+                    </label>
+                    <input
+                      type="text"
+                      name="brand"
+                      value={formData.brand}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
                 </div>
 
+                {/* Image URL */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <Image className="inline h-4 w-4 mr-1" />
@@ -203,6 +245,23 @@ const Admin: React.FC = () => {
                   />
                 </div>
 
+                {/* Link */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Link2 className="inline h-4 w-4 mr-1" />
+                    Product Link
+                  </label>
+                  <input
+                    type="url"
+                    name="link"
+                    value={formData.link}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="https://example.com/product"
+                  />
+                </div>
+
+                {/* Description */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Description
@@ -246,7 +305,9 @@ const Admin: React.FC = () => {
           <p>• Click "Add Product" to create new products</p>
           <p>• All products will appear on the main page immediately</p>
           <p>• Use high-quality image URLs for better presentation</p>
-          <p>• Categories help users filter products easily</p>
+          <p>• Categories, store, and brand names help users filter products easily</p>
+          <p>• Add up to 3 customer reviews for authenticity</p>
+          <p>• Provide a product link for external store access</p>
         </div>
       </div>
     </div>

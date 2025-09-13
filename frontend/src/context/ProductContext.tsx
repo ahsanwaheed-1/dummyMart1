@@ -15,6 +15,9 @@ interface Product {
     date: string;
   }>;
   imageUrl: string;
+  store: string;
+  brand: string;
+  link: string;
   createdAt: string;
 }
 
@@ -54,6 +57,7 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const addProduct = async (product: Omit<Product, '_id' | 'createdAt'>) => {
     try {
+      console.log('Adding product:', product);
       const response = await axios.post(`${API_URL}/products`, product);
       setProducts(prev => [response.data, ...prev]);
     } catch (error) {
