@@ -45,8 +45,10 @@ router.get('/:id', async (req, res) => {
 // Create new product
 router.post('/', async (req, res) => {
   try {
-    const { name, price, category, rating, description, reviews, imageUrl } = req.body;
-    
+    const { name, price, category, rating, description, reviews, imageUrl, store, brand, link } = req.body;
+
+    console.log("Posting data: ",req.body);
+
     const product = new Product({
       name,
       price,
@@ -54,7 +56,10 @@ router.post('/', async (req, res) => {
       rating,
       description,
       reviews: reviews || [],
-      imageUrl
+      imageUrl,
+      store,
+      brand,
+      link
     });
 
     const savedProduct = await product.save();
@@ -63,6 +68,7 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
 
 // Update product
 router.put('/:id', async (req, res) => {

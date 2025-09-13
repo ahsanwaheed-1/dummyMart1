@@ -41,6 +41,18 @@ const productSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  store: {
+    type: String,
+    trim: true
+  },
+  brand: {
+    type: String,
+    trim: true
+  },
+  link: {
+    type: String,
+    trim: true
+  },
   createdAt: {
     type: Date,
     default: Date.now
