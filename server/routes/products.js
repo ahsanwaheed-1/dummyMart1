@@ -3,22 +3,25 @@ import Product from '../models/Product.js';
 
 const router = express.Router();
 
-// Get all products
-// Get all products or search by name
+// Get all products OR search by one/multiple names
 router.get('/', async (req, res) => {
   const searchQuery = req.query.q;
-  
+
   try {
     let products;
-    
+
     if (searchQuery) {
+      // Split comma-separated search terms
+      const searchTerms = searchQuery.split(',').map(term => term.trim());
+
+      // Case-insensitive search for any term
       products = await Product.find({
-        name: { $regex: searchQuery, $options: 'i' }, // case-insensitive search
+        name: { $regex: searchTerms.join('|'), $options: 'i' }
       }).sort({ createdAt: -1 });
     } else {
       products = await Product.find().sort({ createdAt: -1 });
     }
-    
+
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -47,8 +50,6 @@ router.post('/', async (req, res) => {
   try {
     const { name, price, category, rating, description, reviews, imageUrl, store, brand, link } = req.body;
 
-    console.log("Posting data: ",req.body);
-
     const product = new Product({
       name,
       price,
@@ -68,7 +69,6 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
-
 
 // Update product
 router.put('/:id', async (req, res) => {
